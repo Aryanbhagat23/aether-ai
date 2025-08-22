@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherAI</title>
+    <!-- We're using Tailwind CSS for a modern, lighter aesthetic -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, var(--tw-gradient-stops));
+        }
+        .bg-gradient-to-r {
+             --tw-gradient-stops: #4f46e5, #ec4899; /* from-indigo-600 to-pink-500 */
+        }
+        .sidebar {
+            background-color: #f3f4f6; /* Gray-100 */
+            border: 1px solid #e5e7eb; /* Gray-200 */
+        }
+        .sidebar-header {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 1rem;
+            border-top-left-radius: 1.5rem; /* rounded-3xl */
+            border-top-right-radius: 1.5rem; /* rounded-3xl */
+        }
+        .sidebar-item:hover {
+            background-color: #e5e7eb; /* Gray-200 */
+        }
+        .active-tool {
+            background-color: #e5e7eb; /* Gray-200 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-8">
+        <nav class="flex justify-between items-center max-w-5xl mx-auto">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="text-2xl font-extrabold text-gradient bg-gradient-to-r from-indigo-600 to-pink-500">AetherAI</a>
+            </div>
+            <ul class="hidden md:flex gap-6 font-medium text-gray-600">
+                <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
+                <li><a href="text_to_speech.html" class="hover:text-indigo-600 transition-colors">Text to Speech</a></li>
+                <li><a href="text_to_image.html" class="hover:text-indigo-600 transition-colors">Text to Image</a></li>
+                <li><a href="image_editor.html" class="hover:text-indigo-600 transition-colors">Image Editor</a></li>
+                <li><a href="text_editor.html" class="hover:text-indigo-600 transition-colors">Text Editor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content container -->
+    <main class="flex-grow p-4 sm:p-8 flex justify-center">
+        <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+            <!-- Main content area (left column) -->
+            <div class="md:col-span-3 bg-white p-6 sm:p-10 md:p-14 rounded-3xl shadow-2xl border border-gray-200">
+                <!-- AI Creative Writer Tool -->
+                <div id="ai-writer-tool">
+                    <h1 class="text-4xl font-extrabold text-center md:text-left mb-2">
+                        <span class="text-gradient bg-gradient-to-r from-indigo-600 to-pink-500">AI</span> Creative Writer
+                    </h1>
+                    <p class="text-center md:text-left text-gray-500 mb-8 font-medium">
+                        The AetherAI Story Generator is your secret weapon for instant inspiration, helping you overcome writer’s block and unlock your creative potential.
+                    </p>
+
+                    <!-- Input and button section -->
+                    <div class="flex flex-col gap-6 mb-8">
+                        <!-- Dropdowns for story length, genre, and tone -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                <label for="length-select" class="text-gray-600 font-medium whitespace-nowrap">Length:</label>
+                                <select id="length-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                                    <option value="short">Short</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="long">Long</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                <label for="genre-select" class="text-gray-600 font-medium whitespace-nowrap">Genre:</label>
+                                <select id="genre-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                                    <option value="none" selected>None</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="sci-fi">Sci-Fi</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="comedy">Comedy</option>
+                                    <option value="horror">Horror</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                <label for="tone-select" class="text-gray-600 font-medium whitespace-nowrap">Tone:</label>
+                                <select id="tone-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                                    <option value="none" selected>None</option>
+                                    <option value="dramatic">Dramatic</option>
+                                    <option value="humorous">Humorous</option>
+                                    <option value="formal">Formal</option>
+                                    <option value="poetic">Poetic</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Dropdown for inspiration prompts -->
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                            <label for="inspiration-select" class="text-gray-600 font-medium whitespace-nowrap">Inspiration:</label>
+                            <select id="inspiration-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                                <option value="" selected>Choose a prompt</option>
+                            </select>
+                        </div>
+                        
+                        <textarea
+                            id="prompt-input"
+                            class="w-full p-4 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 resize-none"
+                            rows="4"
+                            placeholder="e.g., A lost robot discovers a new kind of friendship on a dusty planet."
+                        ></textarea>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button
+                                id="generate-btn"
+                                class="flex-1 w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Generate Story
+                            </button>
+                            <button
+                                id="clear-btn"
+                                class="flex-1 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output section with loading indicator, message box, and new Gemini features -->
+                    <div class="bg-gray-200 p-6 rounded-3xl border border-gray-300 mt-8">
+                        <div id="loading-indicator" class="hidden flex justify-center items-center">
+                            <div class="w-8 h-8 rounded-full border-4 border-t-4 border-indigo-500 animate-spin"></div>
+                            <span class="ml-4 text-indigo-600">Generating...</span>
+                        </div>
+                        
+                        <div id="output-container" class="hidden">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                                <h2 class="text-lg font-semibold text-gray-700">Generated Story:</h2>
+                                <p id="word-count" class="text-gray-500 text-sm mt-2 sm:mt-0">Word Count: 0</p>
+                            </div>
+                            <div id="output-text" class="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"></div>
+                            
+                            <div class="mt-8 grid grid-cols-2 lg:grid-cols-3 gap-4">
+                                <button
+                                    id="summarize-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Summarize Story
+                                </button>
+                                <button
+                                    id="continue-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Continue Story
+                                </button>
+                                <button
+                                    id="rewrite-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Change Genre
+                                </button>
+                                <button
+                                    id="alt-ending-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Alt Ending
+                                </button>
+                                <button
+                                    id="change-perspective-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Change Perspective
+                                </button>
+                                <button
+                                    id="generate-character-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Generate Character Profile
+                                </button>
+                                <button
+                                    id="suggest-title-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Suggest Titles
+                                </button>
+                                <button
+                                    id="generate-dialogue-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Generate Dialogue
+                                </button>
+                                <button
+                                    id="elaborate-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Elaborate on a Scene
+                                </button>
+                                <button
+                                    id="plot-twist-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Suggest Plot Twist
+                                </button>
+                                <button
+                                    id="new-character-btn"
+                                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:cursor-not-allowed"
+                                    disabled
+                                >
+                                    Suggest New Character
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Custom message box for errors or status updates -->
+                        <div id="message-box" class="hidden p-4 rounded-xl text-sm" role="alert"></div>
+                    </div>
+                </div>
+                
+                <!-- Paragraph Generator Tool -->
+                <div id="paragraph-generator-tool" class="hidden">
+                    <h1 class="text-4xl font-extrabold text-center md:text-left mb-2">
+                        <span class="text-gradient bg-gradient-to-r from-indigo-600 to-pink-500">AI</span> Paragraph Generator
+                    </h1>
+                    <p class="text-center md:text-left text-gray-500 mb-8 font-medium">
+                        Enter a topic or keyword, and the AI will write a detailed paragraph for you.
+                    </p>
+                    <div class="flex flex-col gap-6 mb-8">
+                        <textarea
+                            id="paragraph-prompt-input"
+                            class="w-full p-4 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 resize-none"
+                            rows="4"
+                            placeholder="e.g., The history of ancient Roman aqueducts"
+                        ></textarea>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button
+                                id="generate-paragraph-btn"
+                                class="flex-1 w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Generate Paragraph
+                            </button>
+                            <button
+                                id="clear-paragraph-btn"
+                                class="flex-1 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-200 p-6 rounded-3xl border border-gray-300 mt-8">
+                         <div id="paragraph-loading-indicator" class="hidden flex justify-center items-center">
+                            <div class="w-8 h-8 rounded-full border-4 border-t-4 border-indigo-500 animate-spin"></div>
+                            <span class="ml-4 text-indigo-600">Generating...</span>
+                        </div>
+                        <div id="paragraph-output-container" class="hidden">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                                <h2 class="text-lg font-semibold text-gray-700">Generated Paragraph:</h2>
+                                <p id="paragraph-word-count" class="text-gray-500 text-sm mt-2 sm:mt-0">Word Count: 0</p>
+                            </div>
+                            <div id="paragraph-output-text" class="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"></div>
+                        </div>
+                        <div id="paragraph-message-box" class="hidden p-4 rounded-xl text-sm" role="alert"></div>
+                    </div>
+                </div>
+                
+                <!-- Blog Outline Maker Tool -->
+                <div id="blog-outline-maker-tool" class="hidden">
+                    <h1 class="text-4xl font-extrabold text-center md:text-left mb-2">
+                        <span class="text-gradient bg-gradient-to-r from-indigo-600 to-pink-500">AI</span> Blog Outline Maker
+                    </h1>
+                    <p class="text-center md:text-left text-gray-500 mb-8 font-medium">
+                        Enter a topic, and the AI will create a structured blog outline for you.
+                    </p>
+                    <div class="flex flex-col gap-6 mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                <label for="blog-tone-select" class="text-gray-600 font-medium whitespace-nowrap">Tone:</label>
+                                <select id="blog-tone-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                                    <option value="Informative" selected>Informative</option>
+                                    <option value="Casual">Casual</option>
+                                    <option value="Professional">Professional</option>
+                                    <option value="Humorous">Humorous</option>
+                                </select>
+                            </div>
+                             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                                <label for="target-audience-input" class="text-gray-600 font-medium whitespace-nowrap">Audience:</label>
+                                <input type="text" id="target-audience-input" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200" placeholder="e.g., small business owners">
+                            </div>
+                        </div>
+                        <textarea
+                            id="blog-outline-prompt-input"
+                            class="w-full p-4 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 resize-none"
+                            rows="4"
+                            placeholder="e.g., The future of generative AI in marketing"
+                        ></textarea>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button
+                                id="generate-blog-outline-btn"
+                                class="flex-1 w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Generate Blog Outline
+                            </button>
+                            <button
+                                id="clear-blog-outline-btn"
+                                class="flex-1 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            >
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-200 p-6 rounded-3xl border border-gray-300 mt-8">
+                         <div id="blog-outline-loading-indicator" class="hidden flex justify-center items-center">
+                            <div class="w-8 h-8 rounded-full border-4 border-t-4 border-indigo-500 animate-spin"></div>
+                            <span class="ml-4 text-indigo-600">Generating...</span>
+                        </div>
+                        <div id="blog-outline-output-container" class="hidden">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                                <h2 class="text-lg font-semibold text-gray-700">Generated Blog Outline:</h2>
+                                <p id="blog-outline-word-count" class="text-gray-500 text-sm mt-2 sm:mt-0">Word Count: 0</p>
+                            </div>
+                            <div id="blog-outline-output-text" class="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"></div>
+                        </div>
+                        <div id="blog-outline-message-box" class="hidden p-4 rounded-xl text-sm" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar for tools (right column) -->
+            <div class="md:col-span-1">
+                <div class="sidebar p-0 rounded-3xl shadow-2xl overflow-hidden">
+                    <div class="sidebar-header rounded-t-3xl bg-red-500 text-white p-4">
+                        <h3 class="text-lg font-bold">Content Writing Tools</h3>
+                    </div>
+                    <ul class="p-4 space-y-3 text-gray-600">
+                        <li id="ai-writer-link" class="sidebar-item p-3 rounded-xl flex items-center gap-2 font-medium shadow-sm cursor-pointer active-tool">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-line"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/><path d="m15 5 3 3"/></svg>
+                            AI Writer
+                        </li>
+                        <li id="paragraph-generator-link" class="sidebar-item p-3 rounded-xl flex items-center gap-2 font-medium shadow-sm cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square-text"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="13" x2="16" y1="11" y2="11"/><line x1="13" x2="18" y1="7" y2="7"/></svg>
+                            Paragraph Generator
+                        </li>
+                        <li id="blog-outline-maker-link" class="sidebar-item p-3 bg-white rounded-xl flex items-center gap-2 font-medium shadow-sm cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                            Blog Outline Maker
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white text-gray-500 py-8 px-8 mt-8 shadow-sm">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 text-sm">
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">About Us</h4>
+                <p>AetherAI is a website that provides users with a variety of free online AI web tools.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Resources</h4>
+                <ul>
+                    <li><a href="blog.html" class="hover:underline">Blog</a></li>
+                    <li><a href="contact_support.html" class="hover:underline">Contact Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Support</h4>
+                <ul>
+                    <li><a href="about.html" class="hover:underline">About</a></li>
+                    <li><a href="faqs.html" class="hover:underline">FAQs</a></li>
+                    <li><a href="contact.html" class="hover:underline">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Trending</h4>
+                <ul>
+                    <li><a href="#" class="hover:underline">Story Generator</a></li>
+                    <li><a href="#" class="hover:underline">AI Writer</a></li>
+                    <li><a href="#" class="hover:underline">Text Generator</a></li>
+                    <li><a href="#" class="hover:underline">Lyrics Generator</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Legal</h4>
+                <ul>
+                    <li><a href="disclaimer.html" class="hover:underline">Disclaimer</a></li>
+                    <li><a href="terms_and_conditions.html" class="hover:underline">Terms & Conditions</a></li>
+                    <li><a href="privacy_policy.html" class="hover:underline">Privacy Policy</a></li>
+                    <li><a href="refund_policy.html" class="hover:underline">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-400 text-xs">
+            Powered by AetherAI.
+        </div>
+    </footer>
+
+
+    <script src="js/utils.js"></script>
+    <script src="js/aiWriter.js"></script>
+    <script src="js/paragraphGenerator.js"></script>
+    <script src="js/blogOutlineMaker.js"></script>
+    <script src="js/textToImage.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiWriterLink = document.getElementById('ai-writer-link');
+            const paragraphGeneratorLink = document.getElementById('paragraph-generator-link');
+            const blogOutlineMakerLink = document.getElementById('blog-outline-maker-link');
+            const aiWriterTool = document.getElementById('ai-writer-tool');
+            const paragraphGeneratorTool = document.getElementById('paragraph-generator-tool');
+            const blogOutlineMakerTool = document.getElementById('blog-outline-maker-tool');
+
+            function showTool(toolId) {
+                aiWriterTool.classList.add('hidden');
+                paragraphGeneratorTool.classList.add('hidden');
+                blogOutlineMakerTool.classList.add('hidden');
+                aiWriterLink.classList.remove('active-tool');
+                paragraphGeneratorLink.classList.remove('active-tool');
+                blogOutlineMakerLink.classList.remove('active-tool');
+
+                if (toolId === 'ai-writer') {
+                    aiWriterTool.classList.remove('hidden');
+                    aiWriterLink.classList.add('active-tool');
+                } else if (toolId === 'paragraph-generator') {
+                    paragraphGeneratorTool.classList.remove('hidden');
+                    paragraphGeneratorLink.classList.add('active-tool');
+                } else if (toolId === 'blog-outline-maker') {
+                    blogOutlineMakerTool.classList.remove('hidden');
+                    blogOutlineMakerLink.classList.add('active-tool');
+                }
+            }
+
+            aiWriterLink.addEventListener('click', () => {
+                showTool('ai-writer');
+            });
+            
+            paragraphGeneratorLink.addEventListener('click', () => {
+                showTool('paragraph-generator');
+            });
+
+            blogOutlineMakerLink.addEventListener('click', () => {
+                showTool('blog-outline-maker');
+            });
+
+            // Initial state
+            showTool('ai-writer');
+        });
+    </script>
+</body>
+</html>

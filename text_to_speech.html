@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherAI - Text to Speech</title>
+    <!-- We're using Tailwind CSS for a modern, lighter aesthetic -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, var(--tw-gradient-stops));
+        }
+        .bg-gradient-to-r {
+             --tw-gradient-stops: #4f46e5, #ec4899; /* from-indigo-600 to-pink-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-8">
+        <nav class="flex justify-between items-center max-w-5xl mx-auto">
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="text-2xl font-extrabold text-gradient bg-gradient-to-r from-indigo-600 to-pink-500">AetherAI</a>
+            </div>
+            <ul class="hidden md:flex gap-6 font-medium text-gray-600">
+                <li><a href="index.html" class="hover:text-indigo-600 transition-colors">Home</a></li>
+                <li><a href="text_to_speech.html" class="hover:text-indigo-600 transition-colors">Text to Speech</a></li>
+                <li><a href="#" class="hover:text-indigo-600 transition-colors">Text to Image</a></li>
+                <li><a href="#" class="hover:text-indigo-600 transition-colors">Image Editor</a></li>
+                <li><a href="#" class="hover:text-indigo-600 transition-colors">Text Editor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content container -->
+    <main class="flex-grow p-8 flex justify-center">
+        <div class="w-full max-w-3xl bg-white p-12 rounded-3xl shadow-2xl border border-gray-200">
+            <h1 class="text-4xl font-extrabold text-center mb-6">Text to Speech</h1>
+            <p class="text-gray-600 leading-relaxed mb-8">
+                Enter your text below and let our AI bring it to life with a natural-sounding voice.
+            </p>
+            
+            <div class="flex flex-col gap-6 mb-8">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                    <label for="voice-select" class="text-gray-600 font-medium whitespace-nowrap">Voice:</label>
+                    <select id="voice-select" class="flex-grow w-full p-2 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 cursor-pointer">
+                        <!-- Approximately 20 voice options for variety -->
+                        <option value="Zephyr">Zephyr (Bright)</option>
+                        <option value="Puck">Puck (Upbeat)</option>
+                        <option value="Charon">Charon (Informative)</option>
+                        <option value="Kore">Kore (Firm)</option>
+                        <option value="Fenrir">Fenrir (Excitable)</option>
+                        <option value="Leda">Leda (Youthful)</option>
+                        <option value="Orus">Orus (Firm)</option>
+                        <option value="Aoede">Aoede (Breezy)</option>
+                        <option value="Callirrhoe">Callirrhoe (Easy-going)</option>
+                        <option value="Autonoe">Autonoe (Bright)</option>
+                        <option value="Enceladus">Enceladus (Breathy)</option>
+                        <option value="Iapetus">Iapetus (Clear)</option>
+                        <option value="Umbriel">Umbriel (Easy-going)</option>
+                        <option value="Algieba">Algieba (Smooth)</option>
+                        <option value="Despina">Despina (Smooth)</option>
+                        <option value="Erinome">Erinome (Clear)</option>
+                        <option value="Algenib">Algenib (Gravelly)</option>
+                        <option value="Rasalgethi">Rasalgethi (Informative)</option>
+                        <option value="Laomedeia">Laomedeia (Upbeat)</option>
+                        <option value="Achernar">Achernar (Soft)</option>
+                        <option value="Alnilam">Alnilam (Firm)</option>
+                        <option value="Schedar">Schedar (Even)</option>
+                        <option value="Gacrux">Gacrux (Mature)</option>
+                        <option value="Pulcherrima">Pulcherrima (Forward)</option>
+                        <option value="Achird">Achird (Friendly)</option>
+                        <option value="Zubenelgenubi">Zubenelgenubi (Casual)</option>
+                        <option value="Vindemiatrix">Vindemiatrix (Gentle)</option>
+                        <option value="Sadachbia">Sadachbia (Lively)</option>
+                        <option value="Sadaltager">Sadaltager (Knowledgeable)</option>
+                        <option value="Sulafat">Sulafat (Warm)</option>
+                    </select>
+                </div>
+                <textarea
+                    id="tts-text-input"
+                    class="w-full p-4 rounded-xl bg-gray-200 border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-200 resize-none"
+                    rows="6"
+                    placeholder="e.g., The quick brown fox jumps over the lazy dog."
+                ></textarea>
+
+                <div class="flex gap-4">
+                    <button
+                        id="generate-tts-btn"
+                        class="flex-1 w-full bg-gradient-to-r from-indigo-600 to-pink-500 hover:opacity-90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        Generate Speech
+                    </button>
+                    <button
+                        id="play-tts-btn"
+                        class="flex-1 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                        disabled
+                    >
+                        Play
+                    </button>
+                </div>
+            </div>
+
+            <div id="tts-output-container" class="hidden text-center mt-4">
+                <h3 class="text-lg font-semibold text-gray-700 mb-2">Generated Audio:</h3>
+                <audio id="tts-audio-player" controls class="w-full"></audio>
+            </div>
+
+            <div id="tts-message-box" class="hidden p-4 rounded-xl text-sm mt-4" role="alert"></div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white text-gray-500 py-8 px-8 mt-8 shadow-sm">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 text-sm">
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">About Us</h4>
+                <p>AetherAI is a website that provides users with a variety of free online AI web tools.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Resources</h4>
+                <ul>
+                    <li><a href="blog.html" class="hover:underline">Blog</a></li>
+                    <li><a href="contact_support.html" class="hover:underline">Contact Support</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Support</h4>
+                <ul>
+                    <li><a href="about.html" class="hover:underline">About</a></li>
+                    <li><a href="faqs.html" class="hover:underline">FAQs</a></li>
+                    <li><a href="contact.html" class="hover:underline">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Trending</h4>
+                <ul>
+                    <li><a href="#" class="hover:underline">Story Generator</a></li>
+                    <li><a href="#" class="hover:underline">AI Writer</a></li>
+                    <li><a href="#" class="hover:underline">Text Generator</a></li>
+                    <li><a href="#" class="hover:underline">Lyrics Generator</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-800 mb-2">Legal</h4>
+                <ul>
+                    <li><a href="disclaimer.html" class="hover:underline">Disclaimer</a></li>
+                    <li><a href="terms_and_conditions.html" class="hover:underline">Terms & Conditions</a></li>
+                    <li><a href="privacy_policy.html" class="hover:underline">Privacy Policy</a></li>
+                    <li><a href="refund_policy.html" class="hover:underline">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-400 text-xs">
+            Powered by AetherAI.
+        </div>
+    </footer>
+    <script src="js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ttsTextInput = document.getElementById('tts-text-input');
+            const voiceSelect = document.getElementById('voice-select');
+            const generateTtsBtn = document.getElementById('generate-tts-btn');
+            const playTtsBtn = document.getElementById('play-tts-btn');
+            const ttsOutputContainer = document.getElementById('tts-output-container');
+            const ttsAudioPlayer = document.getElementById('tts-audio-player');
+            const ttsMessageBox = document.getElementById('tts-message-box');
+
+            function showTtsMessage(message, type = 'info') {
+                ttsMessageBox.textContent = message;
+                ttsMessageBox.className = `p-4 rounded-xl text-sm mt-4 text-center block`;
+                if (type === 'error') {
+                    ttsMessageBox.classList.remove('bg-blue-200', 'bg-green-200');
+                    ttsMessageBox.classList.add('bg-red-200', 'text-red-800');
+                } else if (type === 'success') {
+                    ttsMessageBox.classList.remove('bg-blue-200', 'bg-red-200');
+                    ttsMessageBox.classList.add('bg-green-200', 'text-green-800');
+                } else {
+                    ttsMessageBox.classList.remove('bg-green-200', 'bg-red-200');
+                    ttsMessageBox.classList.add('bg-blue-200', 'text-blue-800');
+                }
+                ttsMessageBox.style.display = 'block';
+            }
+
+            // Function to convert base64 to ArrayBuffer
+            function base64ToArrayBuffer(base64) {
+                const binaryString = atob(base64);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            // Function to convert PCM audio data to a WAV file Blob
+            function pcmToWav(pcmData, sampleRate) {
+                const dataView = new DataView(new ArrayBuffer(44 + pcmData.length * 2));
+                let offset = 0;
+
+                // RIFF identifier
+                dataView.setUint32(offset, 1380533830, true); offset += 4;
+                // file length (total - 8)
+                dataView.setUint32(offset, 36 + pcmData.length * 2, true); offset += 4;
+                // "WAVE" identifier
+                dataView.setUint32(offset, 1463899717, true); offset += 4;
+                // "fmt " chunk
+                dataView.setUint32(offset, 1718449184, true); offset += 4;
+                // chunk length
+                dataView.setUint32(offset, 16, true); offset += 4;
+                // audio format (linear PCM)
+                dataView.setUint16(offset, 1, true); offset += 2;
+                // channel count
+                dataView.setUint16(offset, 1, true); offset += 2;
+                // sample rate
+                dataView.setUint32(offset, sampleRate, true); offset += 4;
+                // byte rate (sample rate * channels * bytes per sample)
+                dataView.setUint32(offset, sampleRate * 2, true); offset += 4;
+                // block align (channels * bytes per sample)
+                dataView.setUint16(offset, 2, true); offset += 2;
+                // bits per sample
+                dataView.setUint16(offset, 16, true); offset += 2;
+                // "data" chunk
+                dataView.setUint32(offset, 1684108385, true); offset += 4;
+                // chunk length (audio data size)
+                dataView.setUint32(offset, pcmData.length * 2, true); offset += 4;
+
+                // Write PCM data
+                for (let i = 0; i < pcmData.length; i++) {
+                    dataView.setInt16(offset, pcmData[i], true);
+                    offset += 2;
+                }
+
+                return new Blob([dataView], { type: 'audio/wav' });
+            }
+
+            // Function to generate speech
+            async function generateSpeech(text, voice) {
+                generateTtsBtn.disabled = true;
+                playTtsBtn.disabled = true;
+                generateTtsBtn.textContent = 'Generating...';
+                showTtsMessage('Generating speech...', 'info');
+                
+                try {
+                    const data = await callServerApi('generate-tts', { text, voice });
+                    
+                    if (data.audioData && data.mimeType) {
+                        const pcmData = new Int16Array(base64ToArrayBuffer(data.audioData));
+                        const sampleRate = parseInt(data.mimeType.match(/rate=(\d+)/)[1], 10);
+                        const wavBlob = pcmToWav(pcmData, sampleRate);
+                        const audioUrl = URL.createObjectURL(wavBlob);
+                        
+                        ttsAudioPlayer.src = audioUrl;
+                        ttsOutputContainer.classList.remove('hidden');
+                        playTtsBtn.disabled = false;
+                        showTtsMessage('Speech generated successfully! You can now play the audio.', 'success');
+                    } else {
+                        throw new Error('No audio data was returned.');
+                    }
+                } catch (error) {
+                    console.error('An error occurred during TTS generation:', error);
+                    showTtsMessage(`Sorry, something went wrong. Please try again.`, 'error');
+                } finally {
+                    generateTtsBtn.disabled = false;
+                    generateTtsBtn.textContent = 'Generate Speech';
+                }
+            }
+
+            generateTtsBtn.addEventListener('click', () => {
+                const text = ttsTextInput.value.trim();
+                const voice = voiceSelect.value;
+                if (text) {
+                    generateSpeech(text, voice);
+                } else {
+                    showTtsMessage('Please enter some text to generate speech.', 'error');
+                }
+            });
+
+            playTtsBtn.addEventListener('click', () => {
+                ttsAudioPlayer.play();
+            });
+        });
+    </script>
+</body>
+</html>
