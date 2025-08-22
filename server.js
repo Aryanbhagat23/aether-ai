@@ -8,12 +8,12 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const app = express();
 const port = 3000;
 
-// Set up CORS to allow requests from your frontend
+// Set up a more flexible CORS policy to allow all origins during development and production
 app.use(cors());
 app.use(express.json());
 
 // IMPORTANT: Paste your API key here
-const apiKey = process.env.API_KEY; 
+const apiKey = process.env.API_KEY;
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -122,7 +122,6 @@ app.post('/generate-image', async (req, res) => {
             return res.status(400).json({ error: 'Prompt is required.' });
         }
         
-        // This is the corrected payload structure for the image generation model
         const payload = { instances: [{ prompt: prompt }], parameters: { sampleCount: 1 } };
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
 
