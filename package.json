@@ -4,8 +4,7 @@
   "description": "An AI Creative Writing tool.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "preinstall": "npm install --production"
+    "start": "node server.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.1.0",
