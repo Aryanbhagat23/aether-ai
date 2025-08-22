@@ -10,7 +10,7 @@
  * @returns {Promise<object>} The parsed JSON response from the server.
  */
 async function callServerApi(endpoint, payload) {
-    const serverUrl = `http://localhost:3000/${endpoint}`;
+    const serverUrl = `https://aether-ai-r1dh.onrender.com/${endpoint}`;
     const maxRetries = 5;
     const baseDelay = 1000; // 1 second
     
